@@ -56,15 +56,15 @@ Prepares the user for what comes next:
 ## 🚀 Quickstart & Running the App
 
 ### Requirements
-- **Python 3.10+** (Uses Python standard library; **zero external dependencies required**).
+- **Node.js 22+**
 
 ### Start the Server
-Double-click `run.bat` or run:
 ```bash
-python app.py
+npm install
+npm run dev
 ```
 Open your browser to:
-👉 **`http://localhost:8000`**
+👉 **`http://localhost:3000`**
 
 ---
 
@@ -74,7 +74,8 @@ Open your browser to:
    - Works 100% offline with zero setup.
    - Computes syntactic anti-patterns, tone metrics, diffs, and calibrated options instantly.
 2. **Google Gemini 2.5 Flash Mode**:
-   - Enter your `GEMINI_API_KEY` in the top-right settings modal or in a `.env` file.
+   - Configure your `GEMINI_API_KEY` in environment variables or enter it in the top-right settings modal.
+   - Uses the official `@google/genai` SDK.
    - Unlocks open-ended real-time pedagogical coaching for any custom draft.
 
 ---
@@ -82,17 +83,19 @@ Open your browser to:
 ## 📂 Project Structure
 
 ```
-h2s/
-├── app.py                  # Threading HTTP server & REST API router
-├── coach_engine.py         # Gemini API handler + smart pedagogical rule engine
-├── scenarios.py            # Taxonomy of academic, career, and personal scenarios
+├── server.js               # Express HTTP server & REST API router (Port 3000)
+├── services/
+│   └── coachEngine.js      # Gemini API handler (@google/genai) + smart rule engine
+├── data/
+│   └── scenarios.js        # Taxonomy of academic, career, and personal scenarios
 ├── static/
 │   ├── index.html          # Clean coaching studio UI
 │   ├── css/
 │   │   └── styles.css      # Custom styles & animations
 │   └── js/
 │       └── app.js          # Reactive state, diff renderer & clipboard handlers
-├── run.bat                 # One-click Windows runner
+├── metadata.json           # Applet configuration & metadata
+├── package.json            # Node.js dependencies & scripts
 ├── .env.example            # Environment variables template
 └── README.md               # Documentation & project overview
 ```

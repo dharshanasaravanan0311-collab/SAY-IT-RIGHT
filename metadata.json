@@ -1,0 +1,8 @@
+{
+  "name": "Say It Right — Multilingual Communication Mentor & Coach",
+  "description": "High-stakes communication coach supporting multilingual ingestion, Indian languages & Hinglish, format adapters (Email, WhatsApp, Formal Letter), and tone calibration.",
+  "requestFramePermissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

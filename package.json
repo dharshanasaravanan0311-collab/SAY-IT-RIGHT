@@ -1,0 +1,18 @@
+{
+  "name": "say-it-right",
+  "version": "1.0.0",
+  "description": "Say It Right — Multilingual Communication Mentor & Coach",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Build complete')\""
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
