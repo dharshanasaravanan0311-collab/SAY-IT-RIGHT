@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Say It Right — Multilingual Communication Mentor & Coach</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-700 to-sky-600 bg-clip-text text-transparent">Say It Right</span>
+                        <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">Communication Mentor</span>
+                    </div>
+                    <p class="text-xs text-slate-500 hidden sm:block">Multilingual Ingestion (English & Indian Languages) • Email 📨 • WhatsApp 💬 • Letter 📝</p>
+                </div>
+            </div>
+
+            <!-- Header Action Items -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button onclick="startWebTour()" class="flex items-center space-x-1.5 text-xs font-bold px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition shadow-sm">
+                    <span>🚀</span>
+                    <span>Interactive Web Tour</span>
+                </button>
+                <button id="engine-status-btn" onclick="openSettingsModal()" class="flex items-center space-x-2 text-xs font-medium px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition shadow-sm">
+                    <span id="engine-badge-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="engine-status-text">Coach Engine Ready</span>
+                    <i data-lucide="settings" class="w-3.5 h-3.5 text-slate-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- Category & Scenario Presets Bar -->
+        <section class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Dilemma Scenarios:</span>
+                    <div class="inline-flex rounded-lg bg-slate-100 p-1 text-xs font-medium text-slate-600" id="category-tabs">
+                        <button class="category-filter-btn px-3 py-1 rounded-md bg-white shadow-sm font-semibold text-indigo-600" data-cat="all">All</button>
+                        <button class="category-filter-btn px-3 py-1 rounded-md hover:text-indigo-600" data-cat="Academic">🎓 Academic</button>
+                        <button class="category-filter-btn px-3 py-1 rounded-md hover:text-indigo-600" data-cat="Early Career">💼 Early Career</button>
+                        <button class="category-filter-btn px-3 py-1 rounded-md hover:text-indigo-600" data-cat="Personal & Boundaries">🤝 Boundaries</button>
+                    </div>
+                </div>
+                <div class="text-xs text-slate-500">
+                    <span id="scenario-count">9</span> Curated Dilemmas • Supports Hinglish & Indian Regional Audio/Text
+                </div>
+            </div>
+
+            <!-- Scenario Pills Carousel -->
+            <div id="scenario-pills-container" class="flex gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+
+        <!-- Recipient Mindset & Empathy Brief -->
+        <section id="recipient-brief-box" class="rounded-xl border border-indigo-100 bg-gradient-to-r from-indigo-50/70 to-sky-50/40 p-4 relative overflow-hidden transition-all duration-300">
+            <div class="flex items-start space-x-3">
+                <div class="p-2 bg-indigo-100 rounded-lg text-indigo-700 mt-0.5">
+                    <i data-lucide="eye" class="w-5 h-5"></i>
+                </div>
+                <div class="space-y-1 flex-1">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h3 class="text-sm font-bold text-indigo-950 flex items-center space-x-2">
+                            <span>Recipient Empathy Lens: <span id="brief-recipient-role" class="text-indigo-600">Professor / Instructor</span></span>
+                        </h3>
+                        <span id="brief-stakes-badge" class="px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                            High Stakes
+                        </span>
+                    </div>
+                    <p id="brief-mindset-text" class="text-xs text-slate-600 leading-relaxed">
+                        Manages 200+ students. Fatigued by vague excuses, but receptive to accountability, specific dates, and concise solutions.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-2 text-xs" id="brief-pitfalls-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2-Column Coaching Studio -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- LEFT COLUMN: The Ingestion & Configuration Area -->
+            <div class="lg:col-span-5 space-y-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h2 class="text-base font-bold text-slate-800">1. Input & Delivery Medium</h2>
+                        </div>
+                        <button id="load-preset-btn" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium hover:underline flex items-center space-x-1">
+                            <i data-lucide="clipboard-paste" class="w-3.5 h-3.5"></i>
+                            <span>Fill Sample Draft</span>
+                        </button>
+                    </div>
+
+                    <!-- STEP 1 GUARDRAIL: Platform Format Choice -->
+                    <div class="space-y-1.5 pt-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600">
+                            Choose Delivery Medium: 🚀
+                        </label>
+                        <div class="grid grid-cols-3 gap-2" id="format-selection-group">
+                            <button type="button" class="format-choice-btn py-2 px-3 rounded-xl border border-indigo-600 bg-indigo-50 text-indigo-700 font-bold text-xs flex flex-col items-center justify-center transition shadow-sm" data-format="email">
+                                <span class="text-base">📨</span>
+                                <span class="mt-0.5">Email</span>
+                            </button>
+                            <button type="button" class="format-choice-btn py-2 px-3 rounded-xl border border-slate-200 bg-white text-slate-600 font-semibold text-xs flex flex-col items-center justify-center hover:border-indigo-300 hover:bg-slate-50 transition" data-format="whatsapp">
+                                <span class="text-base">💬</span>
+                                <span class="mt-0.5">WhatsApp</span>
+                            </button>
+                            <button type="button" class="format-choice-btn py-2 px-3 rounded-xl border border-slate-200 bg-white text-slate-600 font-semibold text-xs flex flex-col items-center justify-center hover:border-indigo-300 hover:bg-slate-50 transition" data-format="letter">
+                                <span class="text-base">📝</span>
+                                <span class="mt-0.5">Formal Letter</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Context Tweaks -->
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Recipient</label>
+                            <input id="input-recipient" type="text" value="Professor / Course Instructor" 
+                                class="w-full text-xs rounded-lg border border-slate-200 px-3 py-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Tone Profile</label>
+                            <select id="input-tone" class="w-full text-xs rounded-lg border border-slate-200 px-3 py-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                                <option value="Formal">Formal & Professional</option>
+                                <option value="Polite">Polite & Courteous</option>
+                                <option value="Urgent">Urgent & High Priority</option>
+                                <option value="Casual">Casual & Approachable</option>
+                                <option value="Persuasive">Persuasive & Compelling</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Target Output Language (Intelligent Language Routing) -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="text-xs font-semibold text-slate-700 flex items-center space-x-1">
+                                <span>🌐 Target Output Language:</span>
+                            </label>
+                            <span class="text-[10px] text-indigo-600 font-medium">Auto-translates to English by default</span>
+                        </div>
+                        <select id="input-target-lang" class="w-full text-xs rounded-lg border border-slate-200 px-3 py-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                            <option value="English">English (Default Professional)</option>
+                            <option value="Hindi">Hindi (हिन्दी)</option>
+                            <option value="Tamil">Tamil (தமிழ்)</option>
+                            <option value="Telugu">Telugu (తెలుగు)</option>
+                            <option value="Gujarati">Gujarati (ગુજરાતી)</option>
+                            <option value="Bengali">Bengali (বাংলা)</option>
+                            <option value="Marathi">Marathi (मराठी)</option>
+                            <option value="Spanish">Spanish (Español)</option>
+                            <option value="French">French (Français)</option>
+                        </select>
+                    </div>
+
+                    <!-- Speech-to-Text Voice Toolbar -->
+                    <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs">
+                        <div class="flex items-center space-x-2">
+                            <button id="mic-btn" type="button" class="w-8 h-8 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center transition shadow-sm" title="Click to speak (Voice-to-Text)">
+                                <i data-lucide="mic" class="w-4 h-4" id="mic-icon"></i>
+                            </button>
+                            <span id="mic-status-label" class="text-slate-600 font-medium">Click mic to speak</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="text-[11px] text-slate-400">Audio Lang:</span>
+                            <select id="voice-lang-select" class="text-xs bg-white border border-slate-200 rounded-md px-2 py-1 focus:outline-none">
+                                <option value="en-IN">English (India)</option>
+                                <option value="hi-IN">Hindi (हिन्दी)</option>
+                                <option value="ta-IN">Tamil (தமிழ்)</option>
+                                <option value="te-IN">Telugu (తెలుగు)</option>
+                                <option value="bn-IN">Bengali (বাংলা)</option>
+                                <option value="mr-IN">Marathi (मराठी)</option>
+                                <option value="gu-IN">Gujarati (ગુજરાતી)</option>
+                                <option value="kn-IN">Kannada (ಕನ್ನಡ)</option>
+                                <option value="ml-IN">Malayalam (മലയാളം)</option>
+                                <option value="pa-IN">Punjabi (ਪੰਜਾਬੀ)</option>
+                                <option value="ur-IN">Urdu (اردو)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Textarea for Draft -->
+                    <div class="relative">
+                        <textarea id="raw-draft-input" rows="8" 
+                            placeholder="Type or speak in English, Hinglish, or any official Indian language (e.g., 'Sir kal tak assignment submit nahi ho payega, please thoda time de dijiye...')"
+                            class="w-full text-sm rounded-xl border border-slate-200 p-3.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition leading-relaxed placeholder:text-slate-400 resize-none font-normal"></textarea>
+                        
+                        <div class="flex items-center justify-between pt-2 px-1 text-xs text-slate-400">
+                            <div class="flex items-center space-x-2">
+                                <span id="char-counter">0 characters</span>
+                                <span id="detected-lang-pill" class="hidden px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-semibold border border-emerald-200">
+                                    Language Detected
+                                </span>
+                            </div>
+                            <button id="clear-input-btn" class="hover:text-slate-600 transition">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button id="analyze-btn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-700 hover:to-sky-700 text-white font-semibold text-sm shadow-md shadow-indigo-100 flex items-center justify-center space-x-2 transition transform active:scale-[0.99]">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        <span>Polish & Mentor Me</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: The Coaching Result -->
+            <div class="lg:col-span-7 space-y-4">
+
+                <!-- Placeholder Empty State -->
+                <div id="coach-placeholder" class="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-4 shadow-sm">
+                    <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 mx-auto flex items-center justify-center">
+                        <i data-lucide="message-square-dashed" class="w-8 h-8"></i>
+                    </div>
+                    <div class="max-w-md mx-auto space-y-1">
+                        <h3 class="text-base font-bold text-slate-800">Your Communication Mentor is Ready</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Speak or type your message in English or any Indian language (Hindi, Hinglish, Tamil, Bengali, etc.). We'll format it for your chosen platform (Email 📨, WhatsApp 💬, or Letter 📝) and refine it until you are 100% satisfied.
+                        </p>
+                    </div>
+                    <button onclick="document.getElementById('load-preset-btn').click(); document.getElementById('analyze-btn').click();" class="inline-flex items-center space-x-2 text-xs font-semibold px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition">
+                        <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                        <span>Try Sample Extension Scenario</span>
+                    </button>
+                </div>
+
+                <!-- Loading Skeleton -->
+                <div id="coach-loading" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full skeleton"></div>
+                        <div class="space-y-1 flex-1">
+                            <div class="h-4 w-48 rounded skeleton"></div>
+                            <div class="h-3 w-32 rounded skeleton"></div>
+                        </div>
+                    </div>
+                    <div class="h-24 rounded-xl skeleton"></div>
+                    <div class="h-40 rounded-xl skeleton"></div>
+                </div>
+
+                <!-- Coaching Output Studio (Shown after analysis) -->
+                <div id="coach-results" class="hidden space-y-4">
+
+                    <!-- Diagnostic & Ingestion Banner -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <h3 class="text-sm font-bold text-slate-800">Communication Diagnostic & Linguistic Scan</h3>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span id="output-lang-badge" class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-semibold text-xs border border-indigo-200">
+                                    🇮🇳 Hinglish Ingested → Professional English
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Readiness Score + Tone Metrics -->
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                            <div class="sm:col-span-4 bg-slate-50 rounded-xl p-3.5 text-center border border-slate-100">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Impact & Readiness</div>
+                                <div class="flex items-baseline justify-center space-x-1">
+                                    <span id="metric-readiness" class="text-4xl font-extrabold text-indigo-600">55</span>
+                                    <span class="text-xs font-semibold text-slate-400">/ 100</span>
+                                </div>
+                                <div id="metric-readiness-label" class="mt-1 text-xs font-semibold text-amber-600">Needs Tone Calibration</div>
+                            </div>
+
+                            <!-- 4-Tone Metric Radar Bars -->
+                            <div class="sm:col-span-8 space-y-2 text-xs">
+                                <div>
+                                    <div class="flex justify-between font-medium text-slate-600 mb-0.5">
+                                        <span>Directness & Clarity</span>
+                                        <span id="label-clarity" class="font-bold text-slate-800">4 / 5</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div id="bar-clarity" class="bg-indigo-500 h-2 rounded-full metric-bar" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between font-medium text-slate-600 mb-0.5">
+                                        <span>Warmth & Goodwill</span>
+                                        <span id="label-warmth" class="font-bold text-slate-800">4 / 5</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div id="bar-warmth" class="bg-emerald-500 h-2 rounded-full metric-bar" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between font-medium text-slate-600 mb-0.5">
+                                        <span>Assertiveness</span>
+                                        <span id="label-assertiveness" class="font-bold text-slate-800">3 / 5</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div id="bar-assertiveness" class="bg-sky-500 h-2 rounded-full metric-bar" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between font-medium text-slate-600 mb-0.5">
+                                        <span>Professional Deference</span>
+                                        <span id="label-deference" class="font-bold text-slate-800">4 / 5</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div id="bar-deference" class="bg-purple-500 h-2 rounded-full metric-bar" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Anti-Patterns Flags -->
+                        <div id="anti-patterns-container" class="space-y-2 pt-1">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Formatted Message Box -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 flex items-center space-x-2">
+                                    <span id="active-format-title-icon">📨</span>
+                                    <span id="active-format-title">Email Format</span>
+                                </h3>
+                                <p class="text-xs text-slate-500" id="active-format-subtitle">Structured with Subject line, greeting, and signature</p>
+                            </div>
+
+                            <!-- Fast Format Switcher Pills -->
+                            <div class="inline-flex rounded-lg bg-slate-100 p-1 text-xs font-medium text-slate-600" id="output-format-tabs">
+                                <button onclick="switchResultFormat('email')" id="tab-format-email" class="px-2.5 py-1 rounded-md bg-white shadow-sm font-semibold text-indigo-600 transition">Email 📨</button>
+                                <button onclick="switchResultFormat('whatsapp')" id="tab-format-whatsapp" class="px-2.5 py-1 rounded-md hover:text-indigo-600 transition text-slate-600">WhatsApp 💬</button>
+                                <button onclick="switchResultFormat('letter')" id="tab-format-letter" class="px-2.5 py-1 rounded-md hover:text-indigo-600 transition text-slate-600">Letter 📝</button>
+                            </div>
+                        </div>
+
+                        <!-- Subject Line (if available) -->
+                        <div id="subject-line-box" class="space-y-1">
+                            <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+                                <span>Subject:</span>
+                                <button onclick="copyToClipboard('calibrated-subject', 'Subject copied!')" class="text-indigo-600 hover:text-indigo-700 font-medium flex items-center space-x-1">
+                                    <i data-lucide="copy" class="w-3 h-3"></i>
+                                    <span>Copy</span>
+                                </button>
+                            </div>
+                            <div id="calibrated-subject" class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 select-all">
+                                Request for 48-Hour Extension: [Course Code] - [Name]
+                            </div>
+                        </div>
+
+                        <!-- Body Text -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+                                <span>Message Content:</span>
+                                <button onclick="copyToClipboard('calibrated-body', 'Full message copied!')" class="text-indigo-600 hover:text-indigo-700 font-medium flex items-center space-x-1">
+                                    <i data-lucide="copy" class="w-3 h-3"></i>
+                                    <span>Copy Formatted Output</span>
+                                </button>
+                            </div>
+                            <div id="calibrated-body" class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs sm:text-sm font-normal text-slate-800 leading-relaxed whitespace-pre-wrap select-all font-mono">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- THE PEDAGOGICAL DIFF VIEW ("Why This Works") -->
+                        <div class="space-y-2 pt-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">The Lesson: Why These Phrases Changed</span>
+                                <span class="text-[11px] text-slate-400">Click badges to inspect</span>
+                            </div>
+                            <div id="diffs-container" class="space-y-2">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <!-- STEP 2 & 3 GUARDRAIL: Tone Refinement Hook & Interactive Toolbar -->
+                        <div class="mt-4 p-4 rounded-xl bg-gradient-to-r from-indigo-50/90 to-sky-50/90 border border-indigo-200 space-y-3">
+                            <div class="flex items-start space-x-2.5">
+                                <span class="text-base">🔍</span>
+                                <div class="space-y-1">
+                                    <p class="text-xs sm:text-sm font-bold text-indigo-950">
+                                        Does this output satisfy your need, or would you like to change the tone?
+                                    </p>
+                                    <p class="text-[11px] text-slate-600">
+                                        Pick a quick tone adjustment below to instantly re-generate without losing key facts:
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 pt-1" id="tone-adjustment-pills">
+                                <button onclick="refineWithTone('Formal')" class="px-3 py-1.5 rounded-lg bg-white border border-indigo-200 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold shadow-sm transition flex items-center space-x-1">
+                                    <span>👔 More Formal</span>
+                                </button>
+                                <button onclick="refineWithTone('Casual')" class="px-3 py-1.5 rounded-lg bg-white border border-indigo-200 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold shadow-sm transition flex items-center space-x-1">
+                                    <span>😊 More Casual</span>
+                                </button>
+                                <button onclick="refineWithTone('Urgent')" class="px-3 py-1.5 rounded-lg bg-white border border-indigo-200 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold shadow-sm transition flex items-center space-x-1">
+                                    <span>⚡ More Urgent</span>
+                                </button>
+                                <button onclick="refineWithTone('Polite')" class="px-3 py-1.5 rounded-lg bg-white border border-indigo-200 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold shadow-sm transition flex items-center space-x-1">
+                                    <span>🙏 More Polite</span>
+                                </button>
+                                <button onclick="refineWithTone('Persuasive')" class="px-3 py-1.5 rounded-lg bg-white border border-indigo-200 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-semibold shadow-sm transition flex items-center space-x-1">
+                                    <span>🎯 More Persuasive</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Follow-up Playbook -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-slate-100">
+                            <i data-lucide="compass" class="w-4 h-4 text-indigo-600"></i>
+                            <h3 class="text-sm font-bold text-slate-800">Follow-Up Playbook</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200 space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-700 flex items-center space-x-1">
+                                        <i data-lucide="clock" class="w-3 h-3 text-sky-600"></i>
+                                        <span>If No Reply (36-48h)</span>
+                                    </span>
+                                    <button onclick="copyToClipboard('playbook-nudge', 'Nudge copied!')" class="text-[11px] text-indigo-600 hover:underline">Copy</button>
+                                </div>
+                                <p id="playbook-nudge" class="text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-100 leading-relaxed select-all">
+                                    <!-- Populated by JS -->
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200 space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-700 flex items-center space-x-1">
+                                        <i data-lucide="shield-alert" class="w-3 h-3 text-amber-600"></i>
+                                        <span>If Rejected (Accept Gracefully)</span>
+                                    </span>
+                                    <button onclick="copyToClipboard('playbook-rejected', 'Response copied!')" class="text-[11px] text-indigo-600 hover:underline">Copy</button>
+                                </div>
+                                <p id="playbook-rejected" class="text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-100 leading-relaxed select-all">
+                                    <!-- Populated by JS -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 bg-white py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-1">
+            <p><strong>Say It Right</strong> — Elite Multilingual Communication Mentor & Coach</p>
+            <p>Translating Hinglish & Official Indian Languages into Flawless Professional Communications.</p>
+        </div>
+    </footer>
+
+    <!-- Settings & API Key Modal -->
+    <div id="settings-modal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                        <i data-lucide="cpu" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-800">Coach Engine Settings</h3>
+                        <p class="text-xs text-slate-400">Configure AI models or run offline</p>
+                    </div>
+                </div>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Google Gemini API Key (Optional)</label>
+                    <input id="api-key-input" type="password" placeholder="AIzaSy..." 
+                        class="w-full text-xs rounded-lg border border-slate-200 px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono">
+                    <p class="text-[11px] text-slate-400 mt-1">
+                        Leave blank to use the built-in Zero-Latency Pedagogical Heuristic Engine.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeSettingsModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">
+                    Cancel
+                </button>
+                <button onclick="saveApiKeySettings()" class="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition">
+                    Save Preferences
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Web Tour Modal -->
+    <div id="tour-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-5 animate-in fade-in duration-200">
+            <!-- Tour Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-sky-500 text-white flex items-center justify-center shadow-sm">
+                        <i data-lucide="compass" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900">Platform Interactive Web Tour</h3>
+                        <p class="text-[11px] text-slate-400">Step <span id="tour-step-num">1</span> of 4</p>
+                    </div>
+                </div>
+                <button onclick="closeWebTour()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Tour Progress Dots -->
+            <div class="flex items-center justify-center space-x-2">
+                <div id="tour-dot-1" class="w-2.5 h-2.5 rounded-full bg-indigo-600 transition-all"></div>
+                <div id="tour-dot-2" class="w-2 h-2 rounded-full bg-slate-200 transition-all"></div>
+                <div id="tour-dot-3" class="w-2 h-2 rounded-full bg-slate-200 transition-all"></div>
+                <div id="tour-dot-4" class="w-2 h-2 rounded-full bg-slate-200 transition-all"></div>
+            </div>
+
+            <!-- Tour Step Content Container -->
+            <div id="tour-content" class="p-5 rounded-xl bg-indigo-50/70 border border-indigo-100/80 space-y-2 min-h-[140px] flex flex-col justify-center text-center">
+                <div id="tour-icon" class="text-3xl mb-1">🎙️</div>
+                <h4 id="tour-title" class="text-sm font-bold text-indigo-950">Step 1: The Input Panel</h4>
+                <p id="tour-description" class="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
+                    Click the microphone icon to speak in English or any Indian language, or simply type your raw thoughts in the text box.
+                </p>
+            </div>
+
+            <!-- Tour Footer Question & Action Buttons -->
+            <div class="space-y-3 pt-1">
+                <p class="text-xs font-semibold text-center text-slate-700">
+                    Are you ready to start, or would you like me to explain any step again? 🚀
+                </p>
+                <div class="flex items-center justify-between pt-1">
+                    <button id="tour-prev-btn" onclick="prevTourStep()" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition disabled:opacity-40" disabled>
+                        ← Back
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="goToTourStep(1)" class="px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-50 rounded-lg transition">
+                            Replay Tour 🔄
+                        </button>
+                        <button id="tour-next-btn" onclick="nextTourStep()" class="px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition">
+                            Next Step →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-lg flex items-center space-x-2">
+        <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <!-- Main Client Script -->
+    <script src="/js/app.js"></script>
+</body>
+</html>
